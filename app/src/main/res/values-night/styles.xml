@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="content">#303030</color>
+    <color name="background">#212121</color>
+    <color name="divider">#1FFFFFFF</color>
+    <color name="textColor">#fff</color>
+
+    <style name="Base.AppTheme" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@color/background</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:fontFamily">@font/roboto</item>
+        <item name="colorPrimary">@color/content</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="toolbarNavigationButtonStyle">@style/Toolbar.Navigation.Tinted</item>
+    </style>
+
+    <style name="AppTheme" parent="Base.AppTheme">
+        <item name="android:statusBarColor">@color/background</item>
+    </style>
+</resources>

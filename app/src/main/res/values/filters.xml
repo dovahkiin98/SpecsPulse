@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="sort_by">
+        <item>Release Date</item>
+        <item>Name</item>
+        <item>Operating System</item>
+        <item>Screen Size</item>
+        <item>Manufacturer</item>
+    </string-array>
+    <string-array name="device_type">
+        <item>All</item>
+        <item>Phone</item>
+        <item>Phablet</item>
+        <item>Tablet</item>
+        <item>Watch</item>
+    </string-array>
+    <string-array name="manufacturers">
+        <item>All</item>
+        <item>Sony</item>
+        <item>Samsung</item>
+        <item>HTC</item>
+        <item>LG</item>
+        <item>Google</item>
+        <item>Apple</item>
+        <item>Nokia</item>
+        <item>Asus</item>
+        <item>Huawei</item>
+        <item>Xiaomi</item>
+        <item>Other</item>
+    </string-array>
+
+    <string-array name="os">
+        <item>All</item>
+        <item>Android</item>
+        <item>iOS</item>
+        <item>Windows</item>
+        <item>Other</item>
+    </string-array>
+    <string-array name="android_versions">
+        <item>All</item>
+        <!--101--><item>1.5</item>
+        <!--102--><item>1.6</item>
+        <!--103--><item>2.0</item>
+        <!--104--><item>2.2</item>
+        <!--105--><item>2.3</item>
+        <!--106--><item>4.0</item>
+        <!--107--><item>4.1</item>
+        <!--110--><item>4.2</item>
+        <!--111--><item>4.3</item>
+        <!--112--> <item>4.4</item>
+        <!--113--><item>5.0</item>
+        <!--114--><item>5.1</item>
+        <!--115--><item>6.0</item>
+        <!--116--> <item>7.0</item>
+        <!--117--><item>7.1</item>
+        <!--120--><item>8.0</item>
+        <!--121--><item>8.1</item>
+        <!--122--><item>9</item>
+    </string-array>
+    <string-array name="ios_versions">
+        <item>All</item>
+        <!--201--><item>1</item>
+        <!--202--><item>2</item>
+        <!--203--><item>3</item>
+        <!--204--><item>4</item>
+        <!--205--><item>5</item>
+        <!--206--><item>6</item>
+        <!--207--><item>7</item>
+        <!--210--><item>8</item>
+        <!--211--><item>9</item>
+        <!--212--><item>10</item>
+        <!--213--><item>11</item>
+        <!--214--> <item>12</item>
+    </string-array>
+    <string-array name="windows_versions">
+        <item>All</item>
+        <item>8</item>
+        <item>8.1</item>
+        <item>9</item>
+        <item>10</item>
+    </string-array>
+    <string-array name="screens1">
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+    </string-array>
+    <string-array name="screens2">
+        <item>0</item>
+        <item>2</item>
+        <item>4</item>
+        <item>6</item>
+        <item>8</item>
+    </string-array>
+</resources>

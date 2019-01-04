@@ -1,0 +1,19 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".activities.MainUI">
+
+    <item
+        android:id="@+id/action_view"
+        android:icon="@drawable/ic_grid"
+        android:title="@string/action_list"
+        app:iconTint="?android:textColorPrimary"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_search"
+        android:icon="@drawable/ic_search"
+        android:title="@string/action_search"
+        app:iconTint="?android:textColorPrimary"
+        app:showAsAction="ifRoom" />
+</menu>
