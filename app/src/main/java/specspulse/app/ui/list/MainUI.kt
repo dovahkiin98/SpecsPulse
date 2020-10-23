@@ -1,35 +1,28 @@
-package specspulse.app.activities
+package specspulse.app.ui.list
 
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import androidx.core.view.updatePadding
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
-import androidx.lifecycle.get
-import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.main_ui.*
 import kotlinx.android.synthetic.main.nav_header.view.*
-import org.jetbrains.anko.defaultSharedPreferences
-import org.jetbrains.anko.startActivity
-import org.jetbrains.anko.toast
 import specspulse.app.R
 import specspulse.app.SpecsApp
-import specspulse.app.adapters.DevicesAdapter
-import specspulse.app.data.DevicesViewModel
-import specspulse.app.utils.consume
-import specspulse.app.utils.getStatusBarHeight
-import specspulse.app.utils.showAds
+import specspulse.app.ui.search.SearchActivity
+import specspulse.app.data.SpecsUtils
+import specspulse.app.ui.main.DevicesAdapter
+import specspulse.app.utils.*
 
 class MainUI : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
 
     private var adapter = DevicesAdapter()
     private var isExpanded = false
-    private val disposable = CompositeDisposable()
     private var viewType = DevicesAdapter.ViewType.CARD
+    private val viewModel by viewModels<DevicesViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,38 +35,38 @@ class MainUI : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeLi
         recents.setHasFixedSize(true)
         recents.adapter = adapter
 
-        val isCollapsed = defaultSharedPreferences.getBoolean("collapsed", true)
+        val isCollapsed = SpecsUtils.preferences.getBoolean("collapsed", true)
         recents.collapsed = isCollapsed
 
-        fullList.setOnClickListener { changeList() }
+//        fullList.setOnClickListener { changeList() }
 
-        if (isExpanded) fullList.setText(R.string.collapse_list)
-        ViewModelProviders.of(this).get<DevicesViewModel>().data.observe(this, Observer {
+//        if (isExpanded) fullList.setText(R.string.collapse_list)
+        viewModel.data.observe(this) {
             adapter.devices = it
-        })
+        }
 
         adView.showAds()
     }
 
     private fun changeList() {
-        fullList.setText(if (isExpanded) R.string.full_list else R.string.collapse_list)
+//        fullList.setText(if (isExpanded) R.string.full_list else R.string.collapse_list)
         isExpanded = !isExpanded
 //        getData()
     }
 
     private fun setupNavigation() = navigation.apply {
-        getHeaderView(0).header.updatePadding(top = getStatusBarHeight())
+        getHeaderView(0).header.updatePadding(top = statusBarHeight)
         (menu.findItem(R.id.nav_night).actionView as SwitchCompat).apply {
             isChecked = SpecsApp.NIGHT_MODE
             setOnCheckedChangeListener { _, isChecked ->
-                defaultSharedPreferences.edit().putBoolean("Night Mode", isChecked).apply()
+                SpecsUtils.preferences.edit().putBoolean("Night Mode", isChecked).apply()
                 application.onCreate()
             }
         }
 
         setNavigationItemSelectedListener {
             when {
-                it.groupId == R.id.main_nav -> consume { toast("Coming Soon!") }
+                it.groupId == R.id.main_nav -> consume { shortToast("Coming Soon!") }
                 it.itemId == R.id.nav_night -> consume {
                     (it.actionView as SwitchCompat).apply { isChecked = !isChecked }
                 }
@@ -98,7 +91,7 @@ class MainUI : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeLi
         R.id.action_search -> consume { startActivity<SearchActivity>() }
         R.id.action_view -> consume {
             recents.collapsed = !recents.collapsed
-            defaultSharedPreferences.edit()
+            SpecsUtils.preferences.edit()
                 .putBoolean("collapsed", recents.collapsed)
                 .apply()
             invalidateOptionsMenu()
@@ -112,33 +105,21 @@ class MainUI : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeLi
         else -> super.onBackPressed()
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putBoolean("Expanded", isExpanded)
-//        outState.putInt("ViewType", viewType.value)
-    }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        isExpanded = savedInstanceState.getBoolean("Expanded")
-//        viewType = DevicesAdapter.ViewType.fromValue(savedInstanceState.getInt("ViewType"))
-    }
-
     override fun onStart() {
         super.onStart()
-        defaultSharedPreferences.registerOnSharedPreferenceChangeListener(this)
+        SpecsUtils.preferences.registerOnSharedPreferenceChangeListener(this)
     }
 
     override fun onStop() {
         super.onStop()
-        defaultSharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
-        disposable.clear()
+        SpecsUtils.preferences.unregisterOnSharedPreferenceChangeListener(this)
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String) {
         if (key == "Night Mode") {
-            startActivity(intent)
-            finish()
+            recreate()
+//            startActivity(intent)
+//            finish()
         }
     }
 }

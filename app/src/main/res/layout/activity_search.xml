@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.SearchActivity">
+    tools:context=".ui.search.SearchActivity">
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -26,8 +26,7 @@
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
-            android:fitsSystemWindows="true"
+            android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -37,7 +36,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?colorPrimary"
-                android:fitsSystemWindows="true"
                 app:contentInsetStartWithNavigation="0dp"
                 app:navigationIcon="@drawable/ic_back">
 

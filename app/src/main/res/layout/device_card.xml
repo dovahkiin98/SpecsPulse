@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/content"
+        android:elevation="2dp"
         android:foreground="?selectableItemBackground"
         android:padding="16dp"
         tools:ignore="HardcodedText">
@@ -34,7 +35,7 @@
             android:layout_height="wrap_content"
             android:contentDescription="Manufacturer Logo"
             android:src="@{device.iconRes}"
-            android:tint="?android:textColorPrimary"
+            app:tint="?android:textColorPrimary"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@drawable/manu_xiaomi" />
@@ -47,6 +48,5 @@
             app:layout_constraintLeft_toLeftOf="@+id/device_name"
             app:layout_constraintTop_toBottomOf="@+id/device_name"
             tools:text="2015/8/11" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -11,14 +11,15 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:networkSecurityConfig="@xml/network_config"
-        android:resizeableActivity="false"
+        android:resizeableActivity="true"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="false"
         android:theme="@style/AppTheme"
         tools:replace="android:supportsRtl">
 
-        <activity android:name=".activities.MainUI" />
-        <activity android:name=".activities.InfoActivity">
+        <activity android:name=".ui.list.MainUI" />
+
+        <activity android:name=".ui.details.InfoActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -28,17 +29,20 @@
                 <data
                     android:host="specspulse.com"
                     android:pathPrefix="/device/"
-                    android:scheme="http" />
+                    android:scheme="https" />
             </intent-filter>
         </activity>
+
         <activity
-            android:name=".activities.SearchActivity"
+            android:name=".ui.search.SearchActivity"
             android:windowSoftInputMode="stateHidden" />
+
         <activity
-            android:name=".activities.ImageActivity"
+            android:name=".ui.details.ImageActivity"
             android:theme="@style/ImageTheme" />
+
         <activity
-            android:name=".activities.SplashScreen"
+            android:name=".ui.main.SplashScreen"
             android:theme="@style/SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -51,7 +55,5 @@
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-9586068579198360~5325001927" />
-
-        <!--<uses-library android:name="org.apache.http.legacy" android:required="false"/>-->
     </application>
 </manifest>

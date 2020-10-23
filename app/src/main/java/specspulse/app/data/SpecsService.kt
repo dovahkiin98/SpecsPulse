@@ -1,18 +1,17 @@
 package specspulse.app.data
 
-import io.reactivex.Flowable
-import specspulse.app.model.Device
-import specspulse.app.model.Info
 import retrofit2.http.GET
 import retrofit2.http.Path
+import specspulse.app.model.Device
+import specspulse.app.model.Info
 
 interface SpecsService {
     @GET("DBLimit.php")
-    fun getDeviceListLimit(): Flowable<List<Device>>
+    suspend fun getDeviceListLimit(): List<Device>
 
     @GET("DBSearch.php")
-    fun getDeviceList(): Flowable<List<Device>>
+    suspend fun getDeviceList(): List<Device>
 
     @GET("devices/{device}.json")
-    fun getInfo(@Path("device") device: String): Flowable<List<Info>>
+    suspend fun getInfo(@Path("device") device: String): List<Info>
 }

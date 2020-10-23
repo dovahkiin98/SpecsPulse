@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="false"
-    tools:context=".activities.MainUI">
+    tools:context=".ui.list.MainUI">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/container"
@@ -52,14 +52,20 @@
             </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
+        <specspulse.app.view.AutoFitRecyclerView
             android:id="@+id/infoList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:columnWidth="360dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:itemCount="5"
-            tools:listitem="@layout/info_header" />
+            tools:listitem="@layout/view_info_header" />
+
+        <ProgressBar
+            android:id="@+id/loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <com.google.android.gms.ads.AdView

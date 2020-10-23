@@ -5,7 +5,7 @@ import android.util.AttributeSet
 import androidx.core.view.updatePaddingRelative
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import specspulse.app.adapters.DevicesAdapter
+import specspulse.app.ui.main.DevicesAdapter
 import specspulse.app.R
 import specspulse.app.utils.toDp
 
@@ -22,7 +22,7 @@ class AutoFitRecyclerView(context: Context, attrs: AttributeSet? = null) : Recyc
 
                 (adapter as DevicesAdapter).viewType = DevicesAdapter.ViewType.TILE
 
-                updatePaddingRelative(start = 4.toDp(resources).toInt(), end = 4.toDp(resources).toInt())
+                updatePaddingRelative(start = resources.toDp(4).toInt(), end = resources.toDp(4).toInt())
             } else {
                 manager.spanCount = 1
 

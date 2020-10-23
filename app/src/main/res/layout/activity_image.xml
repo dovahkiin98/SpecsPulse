@@ -5,9 +5,9 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.ImageActivity">
+    tools:context=".ui.details.ImageActivity">
 
-    <com.github.chrisbanes.photoview.PhotoView
+    <ImageView
         android:id="@+id/deviceImage"
         android:layout_width="0dp"
         android:layout_height="0dp"

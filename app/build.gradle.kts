@@ -1,87 +1,179 @@
+import java.text.SimpleDateFormat
+
 plugins {
     id("com.android.application")
     kotlin("android")
     kotlin("android.extensions")
     kotlin("kapt")
+    id("androidx.navigation.safeargs.kotlin")
     id("com.google.gms.google-services")
-//    id("com.getkeepsafe.dexcount")
+    id("com.google.firebase.crashlytics")
 }
 
 android {
-    compileSdkVersion(28)
-    dataBinding.isEnabled = true
+    signingConfigs {
+        maybeCreate("testKey").apply {
+            keyAlias = "key0"
+            keyPassword = "123456"
+            storeFile = file("../testkey.jks")
+            storePassword = "123456"
+        }
+    }
+
+    compileSdkVersion(30)
+
     defaultConfig {
         applicationId = "specspulse.app"
-        minSdkVersion(19)
-        targetSdkVersion(28)
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        minSdkVersion(21)
+        targetSdkVersion(30)
+
         vectorDrawables.useSupportLibrary = true
+        buildFeatures {
+            dataBinding = true
+//            compose = true
+        }
+
+        versionCode = 8
+
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+
+    flavorDimensions("dev")
+
+    productFlavors {
+        maybeCreate("dev").apply {
+            dimension = "dev"
+
+            versionName = "3.0-D"
+
+            minSdkVersion(28)
+
+            versionNameSuffix = "-dev" + "-" + SimpleDateFormat("dd-MM-yyyy").format(System.currentTimeMillis())
+
+            buildConfigField("boolean", "DEV", "true")
+            buildConfigField("boolean", "ADS", "false")
+            resConfigs("en", "xxhdpi")
+        }
+
+        maybeCreate("deploy").apply {
+            dimension = "dev"
+
+            versionName = "3.0"
+
+            minSdkVersion(21)
+
+            buildConfigField("boolean", "DEV", "false")
+            buildConfigField("boolean", "ADS", "true")
+        }
+    }
+
     buildTypes {
+        getByName("debug") {
+            isMinifyEnabled = false
+            isShrinkResources = false
+            isDebuggable = true
+        }
+
+        maybeCreate("preRelease").apply {
+            isMinifyEnabled = true
+            isShrinkResources = true
+            isDebuggable = true
+            versionNameSuffix = "-" + SimpleDateFormat("dd-MM-yyyy").format(System.currentTimeMillis())
+
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+            signingConfig = signingConfigs["testKey"]
+        }
+
         getByName("release") {
             isMinifyEnabled = true
             isShrinkResources = true
-//            isDebuggable = true
-            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
-//            signingConfig = signingConfigs.getByName("config")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+            signingConfig = signingConfigs["testKey"]
         }
     }
-    flavorDimensions("develop")
-    productFlavors {
-        create("publish") {
-            minSdkVersion(19)
-            versionCode = 8
-            versionName = "3.0"
-            buildConfigField("Boolean", "ADS", "true")
-            setDimension("develop")
-        }
-        create("development") {
-            minSdkVersion(26)
-            versionCode = 8
-            versionName = "3.0-D"
-            buildConfigField("Boolean", "ADS", "false")
-            resConfigs("en", "xxhdpi")
-            setDimension("develop")
-        }
-    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+        // useIR = true
+        // freeCompilerArgs = freeCompilerArgs + arrayOf(
+        //     "-Xallow-jvm-ir-dependencies",
+        //     "-Xskip-prerelease-check",
+        //     "-Xopt-in=kotlin.RequiresOptIn"
+        // )
+    }
+
+    composeOptions {
+        // kotlinCompilerVersion = "1.4.10"
+        // kotlinCompilerExtensionVersion = "1.0.0-alpha05"
+    }
 }
 
 dependencies {
-    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
-    kapt("androidx.databinding:databinding-compiler:3.4.0-alpha10")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.kotlin}")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coRoutines}")
 
-    implementation("androidx.lifecycle:lifecycle-extensions:2.1.0-alpha01")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.1.0-alpha01")
-    implementation("androidx.lifecycle:lifecycle-livedata:2.1.0-alpha01")
-    kapt("androidx.lifecycle:lifecycle-compiler:2.1.0-alpha01")
+    //region AndroidX
+    implementation("androidx.core:core-ktx:${Versions.core}")
+    implementation("androidx.appcompat:appcompat:${Versions.appCompat}")
+    implementation("androidx.activity:activity-ktx:${Versions.activity}")
+    implementation("androidx.preference:preference-ktx:${Versions.preferences}")
+    implementation("androidx.fragment:fragment-ktx:${Versions.fragment}")
+    //endregion
 
-    implementation(kotlin("stdlib-jdk8", "1.3.30-dev-576"))
-    implementation("androidx.core:core-ktx:1.1.0-alpha03")
-    implementation("androidx.appcompat:appcompat:1.1.0-alpha01")
-//    implementation("androidx.fragment:fragment-ktx:1.1.0-alpha03")
-    implementation("androidx.recyclerview:recyclerview:1.1.0-alpha01")
-    implementation("com.google.android.material:material:1.1.0-alpha02")
-    implementation("androidx.constraintlayout:constraintlayout:2.0.0-alpha3")
+    //region UI Components
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:${Versions.swipeRefreshLayout}")
+    implementation("androidx.constraintlayout:constraintlayout:${Versions.constraintLayout}")
+    implementation("androidx.recyclerview:recyclerview:${Versions.recyclerView}")
+    implementation("androidx.viewpager2:viewpager2:${Versions.viewPager2}")
+    implementation("com.google.android.material:material:${Versions.materialComponents}")
+    //endregion
 
-    implementation("com.squareup.retrofit2:retrofit:2.5.0")
-    implementation("com.squareup.retrofit2:adapter-rxjava2:2.5.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.5.0")
-    implementation("io.reactivex.rxjava2:rxandroid:2.1.0")
-    implementation("io.reactivex.rxjava2:rxjava:2.2.5")
-    implementation("com.squareup.okhttp3:okhttp:3.12.1")
-    implementation("com.squareup.picasso:picasso:2.71828")
-    implementation("com.google.code.gson:gson:2.8.5")
+    //region Navigation
+    implementation("androidx.navigation:navigation-fragment-ktx:${Versions.navigationComponent}")
+    implementation("androidx.navigation:navigation-ui-ktx:${Versions.navigationComponent}")
+    //endregion
 
-    implementation("org.jetbrains.anko:anko-commons:0.10.8")
-    implementation("com.github.chrisbanes:PhotoView:2.0.0")
-    implementation("com.google.firebase:firebase-ads:17.1.2")
+    //region Lifecycle Components
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycle}")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:${Versions.lifecycle}")
+    //endregion
 
-    androidTestImplementation("androidx.test:core:1.1.0")
-    androidTestImplementation ("androidx.test:runner:1.1.1")
-    androidTestImplementation ("androidx.test.ext:junit:1.1.0")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.1.1")
+    //region Google Services
+    implementation("com.google.android.gms:play-services-ads:${Versions.googleAdsServices}")
+//    implementation("com.google.android.gms:play-services-auth:${Versions.googleAuth}")
+
+    implementation("com.google.firebase:firebase-analytics-ktx:${Versions.firebaseAnalytics}")
+    implementation("com.google.firebase:firebase-messaging-ktx:${Versions.firebaseMessaging}")
+    implementation("com.google.firebase:firebase-crashlytics-ktx:${Versions.firebaseCrashlytics}")
+    //endregion
+
+    //region Networking
+    implementation("com.squareup.okhttp3:okhttp:${Versions.okHttp}")
+
+    implementation("com.squareup.retrofit2:retrofit:${Versions.retrofit}")
+    implementation("com.squareup.retrofit2:converter-moshi:${Versions.retrofit}")
+
+    implementation("io.coil-kt:coil:${Versions.coil}")
+
+    implementation("com.squareup.moshi:moshi-kotlin:${Versions.moshi}")
+    kapt("com.squareup.moshi:moshi-kotlin-codegen:${Versions.moshi}")
+    //endregion
+
+    //region Room
+    implementation("androidx.room:room-runtime:${Versions.room}")
+    implementation("androidx.room:room-ktx:${Versions.room}")
+    kapt("androidx.room:room-compiler:${Versions.room}")
+    //endregion
 }

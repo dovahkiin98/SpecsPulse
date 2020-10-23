@@ -1,4 +1,4 @@
-package specspulse.app.activities
+package specspulse.app.ui.search
 
 import android.app.DatePickerDialog
 import android.os.Bundle
@@ -12,16 +12,20 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.updatePadding
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_search.*
-import kotlinx.android.synthetic.main.filter_dialog.*
-import kotlinx.android.synthetic.main.filter_dialog.view.*
+import kotlinx.android.synthetic.main.dialog_filter.*
+import kotlinx.android.synthetic.main.dialog_filter.view.*
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.plus
 import specspulse.app.R
-import specspulse.app.adapters.DevicesAdapter
+import specspulse.app.ui.main.DevicesAdapter
 import specspulse.app.data.SpecsUtils
 import specspulse.app.model.Device
 import specspulse.app.utils.showAds
+import specspulse.app.utils.statusBarHeight
 import java.util.*
 
 class SearchActivity : AppCompatActivity() {
@@ -29,7 +33,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var filteredList: List<Device>
     private val list = ArrayList<Device>()
     private val adapter = DevicesAdapter()
-    private val disposable = CompositeDisposable()
+    private var scope = MainScope()
 
     private val filterMap = mutableMapOf(
         "EndDate" to (DateFormat.format("yyyy/MM/dd", Calendar.getInstance()).toString() to Calendar.getInstance().timeInMillis),
@@ -50,8 +54,10 @@ class SearchActivity : AppCompatActivity() {
         setSupportActionBar(searchBar)
         setupSearch()
 
+        searchBar.updatePadding(top = statusBarHeight)
+
         if (savedInstanceState != null) filterMap.forEach {
-            val first = savedInstanceState.getString("${it.key}_STRING")
+            val first = savedInstanceState.getString("${it.key}_STRING")!!
             val second = savedInstanceState.getLong(it.key)
             filterMap[it.key] = first to second
         }
@@ -95,7 +101,7 @@ class SearchActivity : AppCompatActivity() {
         }
         R.id.action_filter -> {
             //region Filter Views
-            val view = View.inflate(this, R.layout.filter_dialog, null).apply {
+            val view = View.inflate(this, R.layout.dialog_filter, null).apply {
                 //region Listeners
                 val startCal = Calendar.getInstance().apply { timeInMillis = filterMap["StartDate"]!!.second }
                 startDate.setOnClickListener {
@@ -153,6 +159,7 @@ class SearchActivity : AppCompatActivity() {
             val dialog = BottomSheetDialog(this).apply {
                 setContentView(view)
             }
+
             view.findViewById<ImageView>(R.id.closeButton).setOnClickListener {
                 filterMap["Sort"] = sortSpinner.selectedItem.toString() to sortSpinner.selectedItemPosition.toLong()
                 filterMap["type"] = typeSpinner.selectedItem.toString() to typeSpinner.selectedItemPosition.toLong()
@@ -190,7 +197,7 @@ class SearchActivity : AppCompatActivity() {
             it.name.contains(text, true)
                 && it.manu.contains(manu as CharSequence, true)
                 && it.type.contains(type as CharSequence, true)
-                && (it.date in (startDate + 1)..(endDate - 1))
+                && (it.date in (startDate + 1) until endDate)
                 && it.screen >= screen
                 && (it.oSInt in minOS..maxOS)
         }.sortedBy {
@@ -207,14 +214,18 @@ class SearchActivity : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
-        disposable.clear()
+        scope.cancel()
     }
 
-    private fun getData() = disposable.add(SpecsUtils.devicesList {
-        progressBar.visibility = View.GONE
-        list.addAll(it)
-        adapter.devices = list
-        searchList.adapter = adapter
-        applyFilter()
-    })
+    private fun getData() {
+        scope += SpecsUtils.devicesList({
+            progressBar.visibility = View.GONE
+            list.addAll(it)
+            adapter.devices = list
+            searchList.adapter = adapter
+            applyFilter()
+        }, {
+
+        })
+    }
 }

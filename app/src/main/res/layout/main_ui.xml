@@ -5,13 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="false"
+    tools:context=".ui.list.MainUI"
     tools:menu="@menu/menu_main">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="false"
-        tools:context=".activities.MainUI">
+        android:fitsSystemWindows="false">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBarLayout"
@@ -36,7 +36,7 @@
         <androidx.core.widget.NestedScrollView
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/adView"
+            app:layout_constraintBottom_toTopOf="@id/adView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/appBarLayout">
@@ -69,18 +69,6 @@
                     app:spanCount="@integer/grid_span_count"
                     tools:itemCount="6"
                     tools:listitem="@layout/device_grid" />
-
-                <Button
-                    android:id="@+id/fullList"
-                    style="@style/Widget.MaterialComponents.Button.TextButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:background="?selectableItemBackgroundBorderless"
-                    android:padding="16dp"
-                    android:text="@string/full_list"
-                    android:textColor="@color/colorAccent"
-                    android:textStyle="bold" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 

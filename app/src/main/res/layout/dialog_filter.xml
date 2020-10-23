@@ -231,7 +231,7 @@
             android:layout_gravity="top|end"
             android:layout_margin="8dp"
             android:contentDescription="Apply"
-            android:tint="@color/colorAccent"
-            app:srcCompat="@drawable/ic_done" />
+            app:srcCompat="@drawable/ic_done"
+            app:tint="@color/colorAccent" />
     </FrameLayout>
 </androidx.core.widget.NestedScrollView>

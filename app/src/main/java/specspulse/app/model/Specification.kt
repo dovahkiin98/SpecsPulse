@@ -1,9 +1,9 @@
 package specspulse.app.model
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
 
 data class Specification(
-    @SerializedName("Icon") var Icon: String = "",
-    @SerializedName("Text") var Text: String = "",
-    @SerializedName("Title") var Title: String = ""
+    @Json(name ="Icon") var Icon: String = "",
+    @Json(name ="Text") var Text: String = "",
+    @Json(name ="Title") var Title: String = ""
 )

@@ -1,17 +1,17 @@
 package specspulse.app.model
 
 import android.text.format.DateFormat
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
 import specspulse.app.R
 import specspulse.app.data.SpecsUtils
 
 class Device(
-    @SerializedName("Name") var name: String = "",
-    @SerializedName("Screen") val screen: Double = 0.0,
-    @SerializedName("Manu") val manu: String = "",
-    @SerializedName("Type") val type: String = "",
-    @SerializedName("Date") val date: Long = 0,
-    @SerializedName("OS") val os: String = ""
+    @Json(name ="Name") var name: String = "",
+    @Json(name ="Screen") val screen: Double = 0.0,
+    @Json(name ="Manu") val manu: String = "",
+    @Json(name ="Type") val type: String = "",
+    @Json(name ="Date") val date: Long = 0,
+    @Json(name ="OS") val os: String = ""
 ) {
 
     val dateString get() = DateFormat.format("dd/MM/yyyy", date).toString()

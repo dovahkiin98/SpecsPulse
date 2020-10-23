@@ -2,13 +2,15 @@ buildscript {
     repositories {
         google()
         jcenter()
-        maven ("http://dl.bintray.com/kotlin/kotlin-dev")
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:3.4.0-alpha10")
-        classpath(kotlin("gradle-plugin", "1.3.30-dev-576"))
+        classpath("com.android.tools.build:gradle:${Versions.gradle}")
+        classpath(kotlin("gradle-plugin", Versions.kotlin))
 
-        classpath("com.google.gms:google-services:4.2.0")
+        classpath("androidx.navigation:navigation-safe-args-gradle-plugin:${Versions.navigationComponent}")
+
+        classpath("com.google.gms:google-services:${Versions.googleServicesGradle}")
+        classpath("com.google.firebase:firebase-crashlytics-gradle:${Versions.firebaseCrashlyticsGradle}")
     }
 }
 
@@ -17,8 +19,6 @@ allprojects {
         jcenter()
         google()
         maven("https://jitpack.io")
-        maven("http://dl.bintray.com/kotlin/kotlin-dev")
-
     }
 }
 

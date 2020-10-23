@@ -1,8 +1,9 @@
-package specspulse.app.activities
+package specspulse.app.ui.main
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import org.jetbrains.anko.startActivity
+import specspulse.app.ui.list.MainUI
+import specspulse.app.utils.startActivity
 
 class SplashScreen : AppCompatActivity() {
 

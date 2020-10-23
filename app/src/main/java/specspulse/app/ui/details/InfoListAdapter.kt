@@ -1,4 +1,4 @@
-package specspulse.app.adapters
+package specspulse.app.ui.details
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.info_header.view.*
+import kotlinx.android.synthetic.main.view_info_header.view.*
 import specspulse.app.R
 import specspulse.app.databinding.InfoChildBinding
 import specspulse.app.model.Info
@@ -15,7 +15,7 @@ import specspulse.app.model.Specification
 class InfoListAdapter(private val flatList: List<Section>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = if (viewType == 0)
-        InfoHeaderHolder(LayoutInflater.from(parent.context).inflate(R.layout.info_header, parent, false))
+        InfoHeaderHolder(LayoutInflater.from(parent.context).inflate(R.layout.view_info_header, parent, false))
     else InfoCardHolder(LayoutInflater.from(parent.context).inflate(R.layout.info_child, parent, false))
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) =

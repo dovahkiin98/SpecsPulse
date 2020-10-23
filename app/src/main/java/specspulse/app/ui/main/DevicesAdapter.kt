@@ -1,16 +1,16 @@
-package specspulse.app.adapters
+package specspulse.app.ui.main
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
-import org.jetbrains.anko.startActivity
 import specspulse.app.R
-import specspulse.app.activities.InfoActivity
+import specspulse.app.ui.details.InfoActivity
 import specspulse.app.databinding.DeviceCardBinding
 import specspulse.app.databinding.DeviceGridBinding
 import specspulse.app.model.Device
+import specspulse.app.utils.startActivity
 
 class DevicesAdapter : RecyclerView.Adapter<DevicesAdapter.DeviceViewHolder>() {
     var devices = listOf<Device>()

@@ -1,8 +1,8 @@
 package specspulse.app.model
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
 
 data class Info(
-    @SerializedName("Data") var Data: List<Specification> = emptyList(),
-    @SerializedName("Title") var Title: String = ""
+    @Json(name ="Data") var Data: List<Specification> = emptyList(),
+    @Json(name ="Title") var Title: String = ""
 )

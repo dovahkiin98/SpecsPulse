@@ -1,4 +1,4 @@
-package specspulse.app.activities
+package specspulse.app.ui.details
 
 import android.os.Bundle
 import android.view.View
@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_image.*
 import specspulse.app.R
 import specspulse.app.data.SpecsUtils
+import specspulse.app.ui.details.InfoActivity
 
 class ImageActivity : AppCompatActivity() {
 
@@ -13,7 +14,7 @@ class ImageActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_image)
 
-        val name = intent.getStringExtra(InfoActivity.DEVICE_NAME)
+        val name = intent.getStringExtra(InfoActivity.DEVICE_NAME) ?: ""
 
         toolbar.setNavigationOnClickListener { supportFinishAfterTransition() }
         titleText.text = name
