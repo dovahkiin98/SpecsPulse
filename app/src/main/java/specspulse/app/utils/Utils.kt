@@ -8,6 +8,7 @@ import android.os.Environment
 import android.text.format.DateFormat
 import android.view.View
 import androidx.core.app.ActivityCompat
+import androidx.core.text.HtmlCompat
 import androidx.core.view.drawToBitmap
 import java.io.File
 import java.io.FileOutputStream
@@ -39,3 +40,5 @@ val Activity.statusBarHeight
             if (this > 0) resources.getDimensionPixelSize(this)
             else 0
         }
+
+fun fromHtml(text: String) = HtmlCompat.fromHtml(text, HtmlCompat.FROM_HTML_MODE_COMPACT)

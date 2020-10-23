@@ -14,6 +14,7 @@ import kotlinx.coroutines.*
 import specspulse.app.R
 import specspulse.app.data.Repository
 import specspulse.app.utils.consume
+import specspulse.app.utils.fromHtml
 import specspulse.app.utils.startActivity
 import specspulse.app.utils.statusBarHeight
 
@@ -27,7 +28,7 @@ class InfoActivity : AppCompatActivity(R.layout.activity_info) {
         val name = intent.getStringExtra(DEVICE_NAME)!!
         val link = intent.getStringExtra(DEVICE_LINK)!!
 
-        collapsingToolbar.title = name
+        collapsingToolbar.title = fromHtml(name)
 
         toolBar.setOnClickListener { infoList.smoothScrollToPosition(0) }
         infoList.setHasFixedSize(true)
