@@ -6,7 +6,7 @@ import androidx.core.text.HtmlCompat
 import androidx.recyclerview.widget.RecyclerView
 import specspulse.app.databinding.DeviceGridBinding
 import specspulse.app.model.Device
-import specspulse.app.ui.details.InfoActivity
+import specspulse.app.ui.details.DetailsActivity
 import specspulse.app.utils.startActivity
 
 class DevicesAdapter : RecyclerView.Adapter<DevicesAdapter.GridViewHolder>() {
@@ -29,9 +29,9 @@ class DevicesAdapter : RecyclerView.Adapter<DevicesAdapter.GridViewHolder>() {
     inner class GridViewHolder(private val binding: DeviceGridBinding) : RecyclerView.ViewHolder(binding.root) {
         init {
             itemView.setOnClickListener {
-                it.context.startActivity<InfoActivity>(
-                    InfoActivity.DEVICE_NAME to binding.device!!.name,
-                    InfoActivity.DEVICE_LINK to binding.device!!.link,
+                it.context.startActivity<DetailsActivity>(
+                    DetailsActivity.DEVICE_NAME to binding.device!!.name,
+                    DetailsActivity.DEVICE_LINK to binding.device!!.link,
                 )
             }
         }

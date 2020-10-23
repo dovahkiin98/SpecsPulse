@@ -4,21 +4,22 @@ import android.app.ActivityOptions
 import android.os.Bundle
 import android.util.Pair
 import android.view.MenuItem
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.core.view.updatePadding
 import androidx.lifecycle.lifecycleScope
 import coil.load
-import kotlinx.android.synthetic.main.activity_info.*
+import kotlinx.android.synthetic.main.activity_details.*
 import kotlinx.coroutines.*
 import specspulse.app.R
 import specspulse.app.data.Repository
 import specspulse.app.utils.consume
 import specspulse.app.utils.fromHtml
 import specspulse.app.utils.startActivity
-import specspulse.app.utils.statusBarHeight
 
-class InfoActivity : AppCompatActivity(R.layout.activity_info) {
+class DetailsActivity : AppCompatActivity(R.layout.activity_details) {
+
+    private val viewModel by viewModels<DetailsViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,32 +38,27 @@ class InfoActivity : AppCompatActivity(R.layout.activity_info) {
             if (deviceImage.drawable != null) {
                 val bundle = ActivityOptions
                     .makeSceneTransitionAnimation(this, Pair.create(it, it.transitionName)).toBundle()
-                startActivity<ImageActivity>(DEVICE_NAME to name)
+                startActivity<ImageActivity>(
+                    ImageActivity.DEVICE_NAME to name,
+                    ImageActivity.DEVICE_IMAGE to link,
+                )
             }
         }
 
-        getData(link)
+        if(savedInstanceState == null) viewModel.getData(link)
+
+        viewModel.device.observe(this) {
+            infoList.adapter = DetailsAdapter(it.details)
+
+            deviceImage.load(it.image)
+
+            loading.isVisible = false
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         android.R.id.home -> consume { finish() }
         else -> super.onOptionsItemSelected(item)
-    }
-
-    private fun getData(link: String) {
-        lifecycleScope.launch(Dispatchers.Main.immediate) {
-            try {
-                val details = Repository.getDeviceDetails(link)
-
-                infoList.adapter = InfoListAdapter(details.details)
-
-                deviceImage.load(details.image)
-            } catch(e: Exception) {
-                println()
-            }
-
-            loading.isVisible = false
-        }
     }
 
     companion object {

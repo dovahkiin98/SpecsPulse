@@ -1,26 +1,21 @@
 package specspulse.app.ui.details
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.NonNull
-import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
-import specspulse.app.R
 import specspulse.app.databinding.ViewInfoBinding
 import specspulse.app.databinding.ViewInfoChildBinding
 import specspulse.app.model.DeviceDetail
-import specspulse.app.utils.inflateLayout
 
-class InfoListAdapter(flatList: List<DeviceDetail>) : RecyclerView.Adapter<InfoListAdapter.InfoHolder>() {
+class DetailsAdapter(details: List<DeviceDetail>) : RecyclerView.Adapter<DetailsAdapter.InfoHolder>() {
 
     private val sections = mutableListOf<DeviceDetailsSection>()
 
     init {
-        var currentTitle = flatList.first().sectionName
+        var currentTitle = details.first().sectionName
         val detailsList = mutableListOf<DeviceDetail>()
 
-        flatList.forEach {
+        details.forEach {
             if (currentTitle != it.sectionName) {
                 sections += DeviceDetailsSection(currentTitle, ArrayList(detailsList))
 

@@ -7,6 +7,7 @@ import coil.load
 import kotlinx.android.synthetic.main.activity_image.*
 import specspulse.app.R
 import specspulse.app.data.Repository
+import specspulse.app.utils.fromHtml
 
 class ImageActivity : AppCompatActivity() {
 
@@ -18,7 +19,8 @@ class ImageActivity : AppCompatActivity() {
         val imageLink = intent.getStringExtra(DEVICE_IMAGE) ?: ""
 
         toolbar.setNavigationOnClickListener { supportFinishAfterTransition() }
-        titleText.text = name
+
+        title = fromHtml(name)
 
         deviceImage.load(imageLink)
 

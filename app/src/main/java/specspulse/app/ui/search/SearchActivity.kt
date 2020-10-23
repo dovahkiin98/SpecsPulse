@@ -5,22 +5,21 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.getSystemService
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
-import androidx.lifecycle.lifecycleScope
 import kotlinx.android.synthetic.main.activity_search.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import specspulse.app.R
-import specspulse.app.data.Repository
 import specspulse.app.ui.list.DevicesAdapter
 
 class SearchActivity : AppCompatActivity(R.layout.activity_search) {
 
     private val adapter = DevicesAdapter()
     private val inputManager by lazy { getSystemService<InputMethodManager>()!! }
+
+    private val viewModel by viewModels<SearchViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +31,12 @@ class SearchActivity : AppCompatActivity(R.layout.activity_search) {
         searchList.setHasFixedSize(true)
 
         searchBox.requestFocus()
+
+        viewModel.devices.observe(this) {
+            adapter.devices = it
+
+            loading.isVisible = false
+        }
     }
 
     private fun setupSearch() {
@@ -71,20 +76,8 @@ class SearchActivity : AppCompatActivity(R.layout.activity_search) {
 
         inputManager.hideSoftInputFromWindow(coordinator.windowToken, 0)
 
-        lifecycleScope.launch(Dispatchers.Main.immediate) {
-            loading.isVisible = true
+        loading.isVisible = true
 
-            adapter.devices = emptyList()
-
-            try {
-                val devices = Repository.searchDevices(term)
-
-                adapter.devices = devices
-            } catch (e: Exception) {
-
-            }
-
-            loading.isVisible = false
-        }
+        viewModel.applySearch(term)
     }
 }

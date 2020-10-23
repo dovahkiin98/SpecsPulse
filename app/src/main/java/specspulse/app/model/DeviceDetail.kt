@@ -1,9 +1,8 @@
 package specspulse.app.model
 
-import androidx.core.text.HtmlCompat
 import specspulse.app.utils.fromHtml
 
-data class DeviceDetail (
+data class DeviceDetail(
     val sectionName: String,
     val title: String,
     val text: String,

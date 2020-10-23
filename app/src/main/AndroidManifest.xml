@@ -19,7 +19,7 @@
 
         <activity android:name=".ui.list.MainUI" />
 
-        <activity android:name=".ui.details.InfoActivity">
+        <activity android:name=".ui.details.DetailsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
