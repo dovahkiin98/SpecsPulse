@@ -7,38 +7,30 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
+import androidx.lifecycle.lifecycleScope
+import coil.load
 import kotlinx.android.synthetic.main.activity_info.*
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.plus
+import kotlinx.coroutines.*
 import specspulse.app.R
-import specspulse.app.data.SpecsUtils
+import specspulse.app.data.Repository
 import specspulse.app.utils.consume
-import specspulse.app.utils.showAds
 import specspulse.app.utils.startActivity
 import specspulse.app.utils.statusBarHeight
 
 class InfoActivity : AppCompatActivity(R.layout.activity_info) {
 
-    private var scope = MainScope()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setSupportActionBar(toolBar)
-        var name = ""
-        if (intent.hasExtra(DEVICE_NAME)) name = intent.getStringExtra(DEVICE_NAME)!!
-        else if (intent.data != null) {
-            name = intent.data!!.lastPathSegment!!.replace("_", " ")
-            println(name)
-        }
+
+        val name = intent.getStringExtra(DEVICE_NAME)!!
+        val link = intent.getStringExtra(DEVICE_LINK)!!
+
         collapsingToolbar.title = name
 
         toolBar.setOnClickListener { infoList.smoothScrollToPosition(0) }
         infoList.setHasFixedSize(true)
-        adView.showAds()
-
-        toolBar.updatePadding(top = statusBarHeight)
 
         deviceImage.setOnClickListener {
             if (deviceImage.drawable != null) {
@@ -48,14 +40,7 @@ class InfoActivity : AppCompatActivity(R.layout.activity_info) {
             }
         }
 
-        getData(name)
-        SpecsUtils.loadImage(SpecsUtils.imageUri(name), deviceImage)
-    }
-
-    override fun onStop() {
-        super.onStop()
-
-        scope.cancel()
+        getData(link)
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
@@ -63,18 +48,24 @@ class InfoActivity : AppCompatActivity(R.layout.activity_info) {
         else -> super.onOptionsItemSelected(item)
     }
 
-    private fun getData(name: String) {
-        scope += SpecsUtils.deviceInfo(name, {
-            val sections = InfoListAdapter.Section.from(it)
-            infoList.adapter = InfoListAdapter(sections)
-//            infoList.adapter = NewInfoListAdapter(it)
-            loading.isVisible = false
-        }, {
+    private fun getData(link: String) {
+        lifecycleScope.launch(Dispatchers.Main.immediate) {
+            try {
+                val details = Repository.getDeviceDetails(link)
 
-        })
+                infoList.adapter = InfoListAdapter(details.details)
+
+                deviceImage.load(details.image)
+            } catch(e: Exception) {
+                println()
+            }
+
+            loading.isVisible = false
+        }
     }
 
     companion object {
+        const val DEVICE_LINK = "DEVICE_LINK"
         const val DEVICE_NAME = "DEVICE_NAME"
     }
 }

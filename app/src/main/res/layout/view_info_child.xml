@@ -8,7 +8,7 @@
 
         <variable
             name="spec"
-            type="specspulse.app.model.Specification" />
+            type="specspulse.app.model.DeviceDetail" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -18,26 +18,15 @@
         android:elevation="2dp"
         android:padding="16dp">
 
-        <ImageView
-            android:id="@+id/infoIcon"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:contentDescription="@{spec.Title + ` icon`}"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/info_wifi" />
-
         <TextView
             android:id="@+id/titleBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="16dp"
-            android:text="@{spec.Title}"
+            android:text="@{spec.title}"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/infoIcon"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Operating System :" />
 
@@ -45,7 +34,6 @@
             android:id="@+id/textBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
             android:text="@{spec.Text}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/titleBox"

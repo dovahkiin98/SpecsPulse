@@ -1,61 +1,82 @@
 package specspulse.app.ui.details
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.NonNull
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.view_info_header.view.*
 import specspulse.app.R
-import specspulse.app.databinding.InfoChildBinding
-import specspulse.app.model.Info
-import specspulse.app.model.Specification
+import specspulse.app.databinding.ViewInfoBinding
+import specspulse.app.databinding.ViewInfoChildBinding
+import specspulse.app.model.DeviceDetail
+import specspulse.app.utils.inflateLayout
 
-class InfoListAdapter(private val flatList: List<Section>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class InfoListAdapter(flatList: List<DeviceDetail>) : RecyclerView.Adapter<InfoListAdapter.InfoHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = if (viewType == 0)
-        InfoHeaderHolder(LayoutInflater.from(parent.context).inflate(R.layout.view_info_header, parent, false))
-    else InfoCardHolder(LayoutInflater.from(parent.context).inflate(R.layout.info_child, parent, false))
+    private val sections = mutableListOf<DeviceDetailsSection>()
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) =
-        if (holder is InfoHeaderHolder) holder.setTitle(flatList[position].title!!)
-        else (holder as InfoCardHolder).setInfo(flatList[position].specification!!)
+    init {
+        var currentTitle = flatList.first().sectionName
+        val detailsList = mutableListOf<DeviceDetail>()
 
-    override fun getItemViewType(position: Int) =
-        if (flatList[position].specification == null) 0
-        else 1
+        flatList.forEach {
+            if (currentTitle != it.sectionName) {
+                sections += DeviceDetailsSection(currentTitle, ArrayList(detailsList))
 
-    override fun getItemCount() = flatList.size
+                currentTitle = it.sectionName
 
-    class Section(val title: String = "", val specification: Specification? = null) {
-        companion object {
-            fun from(list: List<Info>) = ArrayList<Section>().apply {
-                for (info in list) {
-                    add(Section(title = info.Title))
-                    info.Data.mapTo(this) { Section(specification = it) }
+                detailsList.clear()
+            }
+
+            detailsList += it
+        }
+    }
+
+    private val viewPool = RecyclerView.RecycledViewPool()
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = InfoHolder(
+        ViewInfoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+    )
+
+    override fun onBindViewHolder(holder: InfoHolder, position: Int) {
+        holder.bind(sections[position])
+    }
+
+    override fun getItemCount() = sections.size
+
+    inner class InfoHolder(private val binding: ViewInfoBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(section: DeviceDetailsSection) {
+            binding.sectionTitle = section.title
+
+            binding.list.apply {
+                setHasFixedSize(true)
+                setRecycledViewPool(viewPool)
+                adapter = InfoCardAdapter(section.details)
+            }
+        }
+
+        inner class InfoCardAdapter(private val details: List<DeviceDetail>) : RecyclerView.Adapter<InfoCardAdapter.InfoCardHolder>() {
+            override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = InfoCardHolder(
+                ViewInfoChildBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            )
+
+            override fun onBindViewHolder(holder: InfoCardHolder, position: Int) {
+                holder.bind(details[position])
+            }
+
+            override fun getItemCount() = details.size
+
+            inner class InfoCardHolder(private val binding: ViewInfoChildBinding) : RecyclerView.ViewHolder(binding.root) {
+                fun bind(info: DeviceDetail) {
+                    binding.spec = info
                 }
             }
         }
     }
 
-    class InfoHeaderHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun setTitle(title: String) {
-            itemView.title.text = title
-        }
-    }
-
-    class InfoCardHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun setInfo(info: Specification) {
-            val binding = DataBindingUtil.bind<InfoChildBinding>(itemView)!!
-            binding.spec = info
-            binding.infoIcon.setImageResource(getIcon(itemView.context, info))
-        }
-
-        private fun getIcon(context: Context, specification: Specification) = when (val icon = specification.Icon) {
-            "NULL" -> -1
-            "" -> 0
-            else -> context.resources.getIdentifier(icon, "drawable", context.packageName)
-        }
-    }
+    class DeviceDetailsSection(
+        val title: String,
+        val details: List<DeviceDetail>,
+    )
 }

@@ -4,16 +4,9 @@
     tools:context=".ui.list.MainUI">
 
     <item
-        android:id="@+id/action_view"
-        android:icon="@drawable/ic_grid"
-        android:title="@string/action_list"
-        app:iconTint="?android:textColorPrimary"
-        app:showAsAction="ifRoom" />
-
-    <item
         android:id="@+id/action_search"
         android:icon="@drawable/ic_search"
         android:title="@string/action_search"
-        app:iconTint="?android:textColorPrimary"
+        app:iconTint="?colorControlNormal"
         app:showAsAction="ifRoom" />
 </menu>

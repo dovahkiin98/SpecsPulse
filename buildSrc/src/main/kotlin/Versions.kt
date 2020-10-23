@@ -35,7 +35,7 @@ object Versions {
     const val moshi = "1.11.0"
     const val retrofit = "2.9.0"
     const val glide = "4.11.0"
-    const val coil = "1.0.0-rc3"
+    const val coil = "1.0.0"
 
     const val room = "2.3.0-alpha03"
 }

@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".SpecsApp"
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -34,8 +34,7 @@
         </activity>
 
         <activity
-            android:name=".ui.search.SearchActivity"
-            android:windowSoftInputMode="stateHidden" />
+            android:name=".ui.search.SearchActivity" />
 
         <activity
             android:name=".ui.details.ImageActivity"

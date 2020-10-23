@@ -5,32 +5,15 @@ import android.util.AttributeSet
 import androidx.core.view.updatePaddingRelative
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import specspulse.app.ui.main.DevicesAdapter
 import specspulse.app.R
+import specspulse.app.ui.list.DevicesAdapter
 import specspulse.app.utils.toDp
+import java.lang.Integer.max
 
 class AutoFitRecyclerView(context: Context, attrs: AttributeSet? = null) : RecyclerView(context, attrs) {
     private var columnWidth = -1
+
     private val manager = GridLayoutManager(context, GridLayoutManager.VERTICAL)
-    var collapsed = true
-        set(value) {
-            println("C")
-            if (!value) {
-                val width = resources.displayMetrics.widthPixels
-                val spanCount = Math.max(1, width / columnWidth)
-                manager.spanCount = spanCount
-
-                (adapter as DevicesAdapter).viewType = DevicesAdapter.ViewType.TILE
-
-                updatePaddingRelative(start = resources.toDp(4).toInt(), end = resources.toDp(4).toInt())
-            } else {
-                manager.spanCount = 1
-
-                (adapter as DevicesAdapter).viewType = DevicesAdapter.ViewType.CARD
-                updatePaddingRelative(start = 0, end = 0)
-            }
-            field = value
-        }
 
     override fun getLayoutManager() = manager
 
@@ -45,6 +28,9 @@ class AutoFitRecyclerView(context: Context, attrs: AttributeSet? = null) : Recyc
 
     override fun onMeasure(widthSpec: Int, heightSpec: Int) {
         super.onMeasure(widthSpec, heightSpec)
-//        collapsed = collapsed
+
+        val width = resources.displayMetrics.widthPixels
+        val spanCount = max(1, width / columnWidth)
+        manager.spanCount = spanCount
     }
 }

@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorAccent">#FF5722</color>
+    <color name="colorSecondary">#FF5722</color>
     <color name="background">#FAFAFA</color>
     <color name="content">#FFFFFFFF</color>
     <color name="divider">#1F000000</color>
     <color name="textColor">#000</color>
 
-    <style name="Base.AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="colorAccent">@color/colorAccent</item>
+    <style name="Base.AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorSecondary">@color/colorSecondary</item>
         <item name="android:windowBackground">@color/background</item>
-        <item name="android:windowTranslucentStatus">true</item>
         <item name="android:fontFamily">@font/roboto</item>
-        <item name="colorPrimary">@color/content</item>
-        <item name="toolbarNavigationButtonStyle">@style/Toolbar.Navigation.Tinted</item>
+        <item name="colorPrimary">@color/colorSecondary</item>
     </style>
 
     <style name="AppTheme" parent="Base.AppTheme" />
@@ -26,9 +24,5 @@
         <item name="android:windowBackground">@drawable/ic_splash_screen</item>
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowLightStatusBar">true</item>
-    </style>
-
-    <style name="Toolbar.Navigation.Tinted" parent="Widget.AppCompat.Toolbar.Button.Navigation">
-        <item name="tint">?android:textColorPrimary</item>
     </style>
 </resources>

@@ -52,7 +52,6 @@ android {
             versionNameSuffix = "-dev" + "-" + SimpleDateFormat("dd-MM-yyyy").format(System.currentTimeMillis())
 
             buildConfigField("boolean", "DEV", "true")
-            buildConfigField("boolean", "ADS", "false")
             resConfigs("en", "xxhdpi")
         }
 
@@ -64,7 +63,6 @@ android {
             minSdkVersion(21)
 
             buildConfigField("boolean", "DEV", "false")
-            buildConfigField("boolean", "ADS", "true")
         }
     }
 
@@ -151,24 +149,23 @@ dependencies {
     //endregion
 
     //region Google Services
-    implementation("com.google.android.gms:play-services-ads:${Versions.googleAdsServices}")
-//    implementation("com.google.android.gms:play-services-auth:${Versions.googleAuth}")
-
     implementation("com.google.firebase:firebase-analytics-ktx:${Versions.firebaseAnalytics}")
     implementation("com.google.firebase:firebase-messaging-ktx:${Versions.firebaseMessaging}")
     implementation("com.google.firebase:firebase-crashlytics-ktx:${Versions.firebaseCrashlytics}")
     //endregion
 
     //region Networking
-    implementation("com.squareup.okhttp3:okhttp:${Versions.okHttp}")
-
-    implementation("com.squareup.retrofit2:retrofit:${Versions.retrofit}")
-    implementation("com.squareup.retrofit2:converter-moshi:${Versions.retrofit}")
+//    implementation("com.squareup.okhttp3:okhttp:${Versions.okHttp}")
+//
+//    implementation("com.squareup.retrofit2:retrofit:${Versions.retrofit}")
+//    implementation("com.squareup.retrofit2:converter-moshi:${Versions.retrofit}")
 
     implementation("io.coil-kt:coil:${Versions.coil}")
 
-    implementation("com.squareup.moshi:moshi-kotlin:${Versions.moshi}")
-    kapt("com.squareup.moshi:moshi-kotlin-codegen:${Versions.moshi}")
+//    implementation("com.squareup.moshi:moshi-kotlin:${Versions.moshi}")
+//    kapt("com.squareup.moshi:moshi-kotlin-codegen:${Versions.moshi}")
+
+    implementation("org.jsoup:jsoup:1.13.1")
     //endregion
 
     //region Room

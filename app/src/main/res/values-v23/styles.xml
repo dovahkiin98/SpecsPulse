@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorSecondary">#FF5722</color>
+    <color name="background">#FAFAFA</color>
+    <color name="content">#FFFFFFFF</color>
+    <color name="divider">#1F000000</color>
+    <color name="textColor">#000</color>
+
+    <style name="AppTheme" parent="Base.AppTheme">
+        <item name="android:statusBarColor">@color/background</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+</resources>
