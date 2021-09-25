@@ -1,11 +1,9 @@
-import java.text.SimpleDateFormat
+import java.time.format.DateTimeFormatter
+import java.time.LocalDate
 
 plugins {
     id("com.android.application")
     kotlin("android")
-    kotlin("android.extensions")
-    kotlin("kapt")
-    id("androidx.navigation.safeargs.kotlin")
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
 }
@@ -20,49 +18,46 @@ android {
         }
     }
 
-    compileSdkVersion(30)
+    compileSdk = 31
 
     defaultConfig {
         applicationId = "specspulse.app"
 
-        minSdkVersion(21)
-        targetSdkVersion(30)
+        minSdk = 24
+        targetSdk = 31
 
         vectorDrawables.useSupportLibrary = true
         buildFeatures {
-            dataBinding = true
-//            compose = true
+            compose = true
         }
 
-        versionCode = 8
+        versionCode = 9
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    flavorDimensions("dev")
+    flavorDimensions += arrayOf("dev")
 
     productFlavors {
         maybeCreate("dev").apply {
             dimension = "dev"
 
-            versionName = "3.0-D"
+            minSdk = 28
 
-            minSdkVersion(28)
+            versionNameSuffix =
+                "-dev-${DateTimeFormatter.ofPattern("dd-MM-yyyy").format(LocalDate.now())}"
 
-            versionNameSuffix = "-dev" + "-" + SimpleDateFormat("dd-MM-yyyy").format(System.currentTimeMillis())
-
-            buildConfigField("boolean", "DEV", "true")
-            resConfigs("en", "xxhdpi")
+            buildConfigField("Boolean", "DEV", "true")
+            resourceConfigurations += arrayOf("en", "xxhdpi")
         }
 
         maybeCreate("deploy").apply {
             dimension = "dev"
 
             versionName = "3.0"
+            minSdk = 24
 
-            minSdkVersion(21)
-
-            buildConfigField("boolean", "DEV", "false")
+            buildConfigField("Boolean", "DEV", "false")
         }
     }
 
@@ -71,106 +66,109 @@ android {
             isMinifyEnabled = false
             isShrinkResources = false
             isDebuggable = true
+
+            signingConfig = signingConfigs["testKey"]
         }
 
         maybeCreate("preRelease").apply {
             isMinifyEnabled = true
-            isShrinkResources = true
             isDebuggable = true
-            versionNameSuffix = "-" + SimpleDateFormat("dd-MM-yyyy").format(System.currentTimeMillis())
+
+            versionNameSuffix =
+                "-${DateTimeFormatter.ofPattern("dd-MM-yyyy").format(LocalDate.now())}"
 
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
             signingConfig = signingConfigs["testKey"]
         }
 
         getByName("release") {
             isMinifyEnabled = true
-            isShrinkResources = true
+            isDebuggable = false
+
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
             signingConfig = signingConfigs["testKey"]
         }
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        isCoreLibraryDesugaringEnabled = true
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
 
     kotlinOptions {
-        jvmTarget = "1.8"
-        // useIR = true
-        // freeCompilerArgs = freeCompilerArgs + arrayOf(
-        //     "-Xallow-jvm-ir-dependencies",
-        //     "-Xskip-prerelease-check",
-        //     "-Xopt-in=kotlin.RequiresOptIn"
-        // )
+        jvmTarget = "11"
+        freeCompilerArgs = freeCompilerArgs + arrayOf(
+            "-Xallow-jvm-ir-dependencies",
+            "-Xskip-prerelease-check",
+            "-Xjvm-default=all",
+            "-Xopt-in=kotlin.RequiresOptIn",
+        )
     }
 
     composeOptions {
-        // kotlinCompilerVersion = "1.4.10"
-        // kotlinCompilerExtensionVersion = "1.0.0-alpha05"
+        kotlinCompilerExtensionVersion = libs.versions.compose.get()
     }
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.kotlin}")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coRoutines}")
+    //region Kotlin
+    implementation(libs.kotlin.std)
+    implementation(libs.kotlinx.coroutines.android)
+//    implementation(libs.kotlinx.serialization.json)
+    //endregion
 
     //region AndroidX
-    implementation("androidx.core:core-ktx:${Versions.core}")
-    implementation("androidx.appcompat:appcompat:${Versions.appCompat}")
-    implementation("androidx.activity:activity-ktx:${Versions.activity}")
-    implementation("androidx.preference:preference-ktx:${Versions.preferences}")
-    implementation("androidx.fragment:fragment-ktx:${Versions.fragment}")
+    implementation(libs.androidx.core)
+    implementation(libs.androidx.core.splashscreen)
+
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.activity)
+    implementation(libs.androidx.activity.compose)
     //endregion
 
-    //region UI Components
-    implementation("androidx.swiperefreshlayout:swiperefreshlayout:${Versions.swipeRefreshLayout}")
-    implementation("androidx.constraintlayout:constraintlayout:${Versions.constraintLayout}")
-    implementation("androidx.recyclerview:recyclerview:${Versions.recyclerView}")
-    implementation("androidx.viewpager2:viewpager2:${Versions.viewPager2}")
-    implementation("com.google.android.material:material:${Versions.materialComponents}")
+    //region Google
+    implementation(libs.google.material)
     //endregion
 
-    //region Navigation
-    implementation("androidx.navigation:navigation-fragment-ktx:${Versions.navigationComponent}")
-    implementation("androidx.navigation:navigation-ui-ktx:${Versions.navigationComponent}")
+    //region Work
+    implementation(libs.androidx.work.runtime)
     //endregion
 
-    //region Lifecycle Components
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycle}")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:${Versions.lifecycle}")
+    //region Network
+//    implementation(libs.squareup.okhttp3)
+//    implementation(libs.squareup.retrofit2)
+    implementation("org.jsoup:jsoup:1.14.2")
+
+//    implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")
     //endregion
 
-    //region Google Services
-    implementation("com.google.firebase:firebase-analytics-ktx:${Versions.firebaseAnalytics}")
-    implementation("com.google.firebase:firebase-messaging-ktx:${Versions.firebaseMessaging}")
-    implementation("com.google.firebase:firebase-crashlytics-ktx:${Versions.firebaseCrashlytics}")
+    //region Firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.bundles.firebase)
     //endregion
 
-    //region Networking
-//    implementation("com.squareup.okhttp3:okhttp:${Versions.okHttp}")
-//
-//    implementation("com.squareup.retrofit2:retrofit:${Versions.retrofit}")
-//    implementation("com.squareup.retrofit2:converter-moshi:${Versions.retrofit}")
+    //region Compose
+    implementation(libs.bundles.compose)
+    implementation(libs.androidx.navigation.compose)
 
-    implementation("io.coil-kt:coil:${Versions.coil}")
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
 
-//    implementation("com.squareup.moshi:moshi-kotlin:${Versions.moshi}")
-//    kapt("com.squareup.moshi:moshi-kotlin-codegen:${Versions.moshi}")
+    implementation(libs.androidx.constraintlayout.compose)
+    implementation(libs.google.accompanist.insets)
+    implementation(libs.google.accompanist.pager)
+    implementation(libs.google.accompanist.swiperefresh)
 
-    implementation("org.jsoup:jsoup:1.13.1")
+    implementation("io.coil-kt:coil-compose:1.3.2")
+    implementation("me.onebone:toolbar-compose:2.2.0")
     //endregion
 
-    //region Room
-    implementation("androidx.room:room-runtime:${Versions.room}")
-    implementation("androidx.room:room-ktx:${Versions.room}")
-    kapt("androidx.room:room-compiler:${Versions.room}")
-    //endregion
+    coreLibraryDesugaring(libs.android.tools.desugar)
+    debugImplementation(libs.androidx.compose.ui.tooling)
 }

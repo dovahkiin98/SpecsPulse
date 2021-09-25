@@ -6,11 +6,24 @@
     <color name="divider">#1F000000</color>
     <color name="textColor">#000</color>
 
+    <style name="AppTheme.SplashScreen" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/background</item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
+        <item name="postSplashScreenTheme">@style/AppTheme</item>
+    </style>
+
     <style name="Base.AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/colorSecondary</item>
         <item name="colorSecondary">@color/colorSecondary</item>
         <item name="android:windowBackground">@color/background</item>
         <item name="android:fontFamily">@font/roboto</item>
-        <item name="colorPrimary">@color/colorSecondary</item>
+
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/icon</item>
+        <item name="windowSplashScreenBackground">?colorSurface</item>
+        <item name="postSplashScreenTheme">@style/AppTheme</item>
+
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
     </style>
 
     <style name="AppTheme" parent="Base.AppTheme" />
@@ -18,11 +31,5 @@
     <style name="ImageTheme" parent="Base.AppTheme">
         <item name="colorPrimaryDark">@android:color/black</item>
         <item name="android:background">#000</item>
-    </style>
-
-    <style name="SplashScreen" parent="Theme.AppCompat.NoActionBar">
-        <item name="android:windowBackground">@drawable/ic_splash_screen</item>
-        <item name="android:windowTranslucentStatus">true</item>
-        <item name="android:windowLightStatusBar">true</item>
     </style>
 </resources>

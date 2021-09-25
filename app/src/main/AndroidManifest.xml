@@ -14,42 +14,27 @@
         android:resizeableActivity="true"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="false"
-        android:theme="@style/AppTheme"
+        android:theme="@style/AppTheme.SplashScreen"
         tools:replace="android:supportsRtl">
 
-        <activity android:name=".ui.list.MainUI" />
-
-        <activity android:name=".ui.details.DetailsActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="specspulse.com"
-                    android:pathPrefix="/device/"
-                    android:scheme="https" />
-            </intent-filter>
-        </activity>
-
         <activity
-            android:name=".ui.search.SearchActivity" />
+            android:name=".ui.main.MainActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize">
 
-        <activity
-            android:name=".ui.details.ImageActivity"
-            android:theme="@style/ImageTheme" />
-
-        <activity
-            android:name=".ui.main.SplashScreen"
-            android:theme="@style/SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".ui.details.ImageActivity"
+            android:theme="@style/ImageTheme" />
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"

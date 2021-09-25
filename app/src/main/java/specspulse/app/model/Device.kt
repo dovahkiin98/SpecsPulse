@@ -9,5 +9,5 @@ data class Device(
 
     val versions = mutableListOf<Pair<String, String>>()
 
-    override fun toString() = name
+    override fun toString() = name.replace("<br>", " ")
 }

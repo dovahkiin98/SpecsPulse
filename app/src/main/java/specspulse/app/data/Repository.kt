@@ -1,24 +1,29 @@
 package specspulse.app.data
 
-import android.content.Context
-import android.content.SharedPreferences
-import androidx.preference.PreferenceManager
+class Repository private constructor() {
 
-object Repository {
-    private var isInit = false
-    private lateinit var preferences: SharedPreferences
+    private val jsoupRepo = JsoupRepo()
 
-    fun init(context: Context) {
-        if (isInit) return
+    companion object {
+        @Volatile
+        private var INSTANCE: Repository? = null
 
-        preferences = PreferenceManager.getDefaultSharedPreferences(context)
+        fun getInstance(): Repository {
+            return INSTANCE ?: synchronized(this) {
+                val instance = Repository()
 
-        isInit = true
+                INSTANCE = instance
+
+                instance
+            }
+        }
     }
 
-    suspend fun getMostPopular() = JsoupRepo.search("")
+    suspend fun getMostPopular() = jsoupRepo.search("")
 
-    suspend fun searchDevices(term: String) = JsoupRepo.search(term)
+    suspend fun searchDevices(term: String) = jsoupRepo.search(term)
 
-    suspend fun getDeviceDetails(link: String) = JsoupRepo.getDevice(link)
+    suspend fun getDeviceDetails(link: String) = jsoupRepo.getDevice(
+        "https://m.gsmarena.com/${link}.php"
+    )
 }

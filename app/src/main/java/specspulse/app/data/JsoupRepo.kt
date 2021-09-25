@@ -6,10 +6,12 @@ import org.jsoup.Jsoup
 import specspulse.app.model.Device
 import specspulse.app.model.DeviceDetail
 
-object JsoupRepo {
-
-    private const val gsmLink = "https://m.gsmarena.com/"
-    private const val searchLink = "${gsmLink}results.php3?sQuickSearch=yes&sName="
+@Suppress("BlockingMethodInNonBlockingContext")
+class JsoupRepo {
+    companion object {
+        private const val gsmLink = "https://m.gsmarena.com/"
+        private const val searchLink = "${gsmLink}results.php3?sQuickSearch=yes&sName="
+    }
 
     suspend fun getDevice(link: String) = withContext(Dispatchers.IO) {
         val doc = Jsoup.connect(link).get()
@@ -21,7 +23,7 @@ object JsoupRepo {
         )
 
         //region Specs
-        val specsList = doc.getElementById("specs-list")
+        val specsList = doc.getElementById("specs-list")!!
 
         val tables = specsList.getElementsByTag("table")
 
@@ -72,7 +74,7 @@ object JsoupRepo {
 
             val deviceImage = item.child(0).attr("src")
             val deviceName = item.child(1).html()
-            val deviceLink = "https://m.gsmarena.com/" + item.attr("href")
+            val deviceLink = item.attr("href").substringBefore('.')
 
             Device(
                 deviceName,

@@ -3,10 +3,7 @@ package specspulse.app.ui.details
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import coil.load
-import kotlinx.android.synthetic.main.activity_image.*
 import specspulse.app.R
-import specspulse.app.data.Repository
 import specspulse.app.utils.fromHtml
 
 class ImageActivity : AppCompatActivity() {
@@ -18,11 +15,11 @@ class ImageActivity : AppCompatActivity() {
         val name = intent.getStringExtra(DEVICE_NAME) ?: ""
         val imageLink = intent.getStringExtra(DEVICE_IMAGE) ?: ""
 
-        toolbar.setNavigationOnClickListener { supportFinishAfterTransition() }
+//        toolbar.setNavigationOnClickListener { supportFinishAfterTransition() }
 
         title = fromHtml(name)
 
-        deviceImage.load(imageLink)
+//        deviceImage.load(imageLink)
 
         window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
             or View.SYSTEM_UI_FLAG_FULLSCREEN
