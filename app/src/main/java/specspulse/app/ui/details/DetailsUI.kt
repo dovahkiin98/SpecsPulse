@@ -22,6 +22,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.insets.LocalWindowInsets
+import com.google.accompanist.insets.navigationBarsPadding
 import com.google.accompanist.insets.rememberInsetsPaddingValues
 import com.google.accompanist.insets.statusBarsPadding
 import kotlinx.coroutines.launch
@@ -70,7 +71,8 @@ fun DetailsUI(
             )
         },
         modifier = Modifier
-            .statusBarsPadding(),
+            .statusBarsPadding()
+            .navigationBarsPadding(bottom = false),
     ) {
         when (dataState) {
             is UIState.Failure -> {
@@ -90,8 +92,8 @@ fun DetailsUI(
                         .fillMaxSize()
                 )
             }
-            is DetailsViewModel.DeviceDetailsSuccessState -> {
-                val deviceDetails = (dataState as DetailsViewModel.DeviceDetailsSuccessState).data
+            is UIState.Success<*> -> {
+                val deviceDetails = (dataState as UIState.Success<List<DeviceDetailsSection>>).data
 
                 DeviceDetailList(
                     lazyListState,
@@ -110,13 +112,14 @@ fun DeviceDetailList(
 ) {
     LazyColumn(
         state = lazyListState,
-        contentPadding = PaddingValues(
-            top = 12.dp,
-            bottom = 12.dp + rememberInsetsPaddingValues(
-                insets = LocalWindowInsets.current.navigationBars,
-                applyBottom = true,
-            ).calculateBottomPadding(),
-        )
+        contentPadding = rememberInsetsPaddingValues(
+            insets = LocalWindowInsets.current.navigationBars,
+            applyBottom = true,
+            applyStart = false,
+            applyEnd = false,
+            additionalTop = 12.dp,
+            additionalBottom = 12.dp,
+        ),
     ) {
         items(deviceDetails) {
             DeviceDetailsSection(

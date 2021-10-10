@@ -8,7 +8,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import specspulse.app.data.Repository
 import specspulse.app.data.UIState
-import specspulse.app.ui.home.HomeViewModel
 
 class SearchViewModel : ViewModel() {
     private val _devices = MutableLiveData<UIState>()
@@ -21,7 +20,7 @@ class SearchViewModel : ViewModel() {
             try {
                 val searchResponse = Repository.getInstance().searchDevices(term)
 
-                _devices.postValue(HomeViewModel.DeviceListSuccessState(searchResponse))
+                _devices.postValue(UIState.Success(searchResponse))
             } catch (e: Exception) {
                 _devices.postValue(UIState.Failure(e))
             }

@@ -17,6 +17,7 @@ import androidx.core.text.htmlEncode
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.google.accompanist.insets.LocalWindowInsets
+import com.google.accompanist.insets.navigationBarsPadding
 import com.google.accompanist.insets.rememberInsetsPaddingValues
 import com.google.accompanist.insets.statusBarsPadding
 import com.google.accompanist.swiperefresh.SwipeRefresh
@@ -62,6 +63,7 @@ fun HomeUI(
         },
         modifier = Modifier
             .statusBarsPadding()
+            .navigationBarsPadding(bottom = false)
     ) {
         when (dataState) {
             is UIState.Failure -> {
@@ -81,13 +83,13 @@ fun HomeUI(
                         .fillMaxSize()
                 )
             }
-            is HomeViewModel.DeviceListSuccessState -> {
+            is UIState.Success<*> -> {
                 SwipeRefresh(
                     state = rememberSwipeRefreshState(false),
                     onRefresh = { viewModel.getMostPopular() },
                 ) {
                     Column {
-                        val devices = (dataState as HomeViewModel.DeviceListSuccessState).data
+                        val devices = (dataState as UIState.Success<List<Device>>).data
 
                         Text(
                             stringResource(id = R.string.most_recent),
@@ -106,6 +108,8 @@ fun HomeUI(
                             contentPadding = rememberInsetsPaddingValues(
                                 insets = LocalWindowInsets.current.navigationBars,
                                 applyBottom = true,
+                                applyStart = false,
+                                applyEnd = false,
                                 additionalStart = 8.dp,
                                 additionalTop = 8.dp,
                                 additionalEnd = 8.dp,

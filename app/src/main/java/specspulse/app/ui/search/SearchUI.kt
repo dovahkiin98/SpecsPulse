@@ -28,6 +28,7 @@ import androidx.navigation.NavController
 import com.google.accompanist.insets.*
 import specspulse.app.R
 import specspulse.app.data.UIState
+import specspulse.app.model.Device
 import specspulse.app.ui.home.DevicesGrid
 import specspulse.app.ui.home.HomeViewModel
 import specspulse.app.ui.main.Routes
@@ -144,6 +145,7 @@ fun SearchUI(
         },
         modifier = Modifier
             .statusBarsPadding()
+            .navigationBarsPadding(bottom = false)
     ) {
         when (dataState) {
             is UIState.Failure -> {
@@ -163,8 +165,8 @@ fun SearchUI(
                         .fillMaxSize()
                 )
             }
-            is HomeViewModel.DeviceListSuccessState -> {
-                val devices = (dataState as HomeViewModel.DeviceListSuccessState).data
+            is UIState.Success<*> -> {
+                val devices = (dataState as UIState.Success<List<Device>>).data
 
                 val ime = LocalWindowInsets.current.ime
                 val navBars = LocalWindowInsets.current.navigationBars
@@ -176,6 +178,8 @@ fun SearchUI(
                     contentPadding = rememberInsetsPaddingValues(
                         insets = insets,
                         applyBottom = true,
+                        applyStart = false,
+                        applyEnd = false,
                         additionalStart = 8.dp,
                         additionalTop = 8.dp,
                         additionalEnd = 8.dp,

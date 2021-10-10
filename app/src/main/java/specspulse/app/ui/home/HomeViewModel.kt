@@ -25,14 +25,10 @@ class HomeViewModel : ViewModel() {
             try {
                 val mostPopular = Repository.getInstance().getMostPopular()
 
-                _devices.postValue(DeviceListSuccessState(mostPopular))
+                _devices.postValue(UIState.Success(mostPopular))
             } catch (e: Exception) {
                 _devices.postValue(UIState.Failure(e))
             }
         }
     }
-
-    class DeviceListSuccessState(
-        `data`: List<Device>
-    ) : UIState.Success<List<Device>>(`data`)
 }

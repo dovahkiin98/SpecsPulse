@@ -5,7 +5,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import specspulse.app.data.Repository
 import specspulse.app.data.UIState
-import specspulse.app.model.Device
 import specspulse.app.model.DeviceDetail
 import specspulse.app.model.DeviceDetailsSection
 
@@ -46,16 +45,12 @@ class DetailsViewModel(
                     detailsList += it
                 }
 
-                _device.postValue(DeviceDetailsSuccessState(sections))
+                _device.postValue(UIState.Success(sections))
             } catch (e: Exception) {
                 _device.postValue(UIState.Failure(e))
             }
         }
     }
-
-    class DeviceDetailsSuccessState(
-        `data`: List<DeviceDetailsSection>
-    ) : UIState.Success<List<DeviceDetailsSection>>(`data`)
 
     class Factory(
         private val deviceLink: String,
