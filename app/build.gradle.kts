@@ -137,14 +137,10 @@ dependencies {
     implementation(libs.google.material)
     //endregion
 
-    //region Work
-    implementation(libs.androidx.work.runtime)
-    //endregion
-
     //region Network
 //    implementation(libs.squareup.okhttp3)
 //    implementation(libs.squareup.retrofit2)
-    implementation("org.jsoup:jsoup:1.14.2")
+    implementation("org.jsoup:jsoup:1.14.3")
 
 //    implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")
     //endregion
@@ -165,7 +161,7 @@ dependencies {
     implementation(libs.google.accompanist.pager)
     implementation(libs.google.accompanist.swiperefresh)
 
-    implementation("io.coil-kt:coil-compose:1.3.2")
+    implementation("io.coil-kt:coil-compose:2.0.0-alpha01")
     implementation("me.onebone:toolbar-compose:2.2.0")
     //endregion
 

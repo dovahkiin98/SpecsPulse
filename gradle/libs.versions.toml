@@ -1,14 +1,14 @@
 [versions]
-gradle = "7.0.2"
+gradle = "7.1.0-beta01"
 
 kotlin = "1.5.31"
 coRoutines = "1.5.2"
 serialization = "1.3.0"
 
-core = "1.7.0-beta02"
+core = "1.7.0-rc01"
 appCompat = "1.4.0-beta01"
 media = "1.2.0"
-activity = "1.4.0-beta01"
+activity = "1.4.0-rc01"
 fragment = "1.4.0-alpha10"
 lifecycle = "2.4.0-rc1"
 preferences = "1.1.1"
@@ -20,11 +20,10 @@ recyclerView = "1.2.1"
 viewPager2 = "1.1.0-beta01"
 materialComponents = "1.5.0-alpha04"
 
-compose = "1.1.0-alpha05"
+compose = "1.1.0-alpha06"
 accompanist = "0.19.0"
 
 room = "2.3.0"
-work = "2.7.0-beta01"
 
 okhttp = "4.9.1"
 retrofit = "2.9.0"
@@ -65,17 +64,13 @@ androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 androidx-room = { module = "androidx.room:room-ktx", version.ref = "room" }
 
-androidx-work-runtime = { module = "androidx.work:work-runtime-ktx", version.ref = "work" }
-androidx-work-multiprocess = { module = "androidx.work:work-multiprocess", version.ref = "work" }
-androidx-work-gcm = { module = "androidx.work:work-gcm", version.ref = "work" }
-
 google-services = "com.google.gms:google-services:4.3.10"
 google-material = { module = "com.google.android.material:material", version.ref = "materialComponents" }
 google-mlkit-barcode-scanning = "com.google.mlkit:barcode-scanning:17.0.0"
 google-play-core = "com.google.android.play:core:1.10.0"
 google-play-core-ktx = "com.google.android.play:core-ktx:1.8.1"
 
-firebase-bom = "com.google.firebase:firebase-bom:28.4.1"
+firebase-bom = "com.google.firebase:firebase-bom:28.4.2"
 firebase-analytics = { module = "com.google.firebase:firebase-analytics-ktx" }
 firebase-messaging = { module = "com.google.firebase:firebase-messaging-ktx" }
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics-ktx" }
