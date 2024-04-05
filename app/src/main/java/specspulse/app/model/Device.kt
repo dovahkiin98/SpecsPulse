@@ -5,9 +5,14 @@ data class Device(
     val image: String,
     val link: String,
 ) {
-    val details = mutableListOf<DeviceDetail>()
+    override fun toString() = name
 
-    val versions = mutableListOf<Pair<String, String>>()
-
-    override fun toString() = name.replace("<br>", " ")
+    companion object {
+        val dummyDevice
+            get() = Device(
+                name = "Samsung\nGalaxy A55",
+                link = "samsung_galaxy_a55-12824",
+                image = "https://fdn2.gsmarena.com/vv/bigpic/samsung-galaxy-a55.jpg",
+            )
+    }
 }

@@ -13,8 +13,8 @@
         android:networkSecurityConfig="@xml/network_config"
         android:resizeableActivity="true"
         android:roundIcon="@mipmap/ic_launcher"
-        android:supportsRtl="false"
         android:theme="@style/AppTheme.SplashScreen"
+        android:supportsRtl="false"
         tools:replace="android:supportsRtl">
 
         <activity
@@ -31,10 +31,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
-        <activity
-            android:name=".ui.details.ImageActivity"
-            android:theme="@style/ImageTheme" />
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"

@@ -1,14 +1,20 @@
-import java.time.format.DateTimeFormatter
+@file:Suppress("UnstableApiUsage")
+
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 plugins {
-    id("com.android.application")
-    kotlin("android")
-    id("com.google.gms.google-services")
-    id("com.google.firebase.crashlytics")
+    alias(libs.plugins.android.tools.build.gradle)
+    alias(libs.plugins.kotlin.gradle)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt.android.gradle)
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.firebase.crashlytics)
 }
 
 android {
+    namespace = "specspulse.app"
+
     signingConfigs {
         maybeCreate("testKey").apply {
             keyAlias = "key0"
@@ -18,31 +24,37 @@ android {
         }
     }
 
-    compileSdk = 31
+    compileSdk = 34
+
+    tasks.withType<Test> {
+        useJUnitPlatform()
+    }
 
     defaultConfig {
         applicationId = "specspulse.app"
 
         minSdk = 24
-        targetSdk = 31
+        targetSdk = 34
 
         vectorDrawables.useSupportLibrary = true
+
         buildFeatures {
             compose = true
+            buildConfig = true
         }
 
-        versionCode = 9
+        versionCode = 10
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    flavorDimensions += arrayOf("dev")
+    flavorDimensions += "dev"
 
     productFlavors {
         maybeCreate("dev").apply {
             dimension = "dev"
 
-            minSdk = 28
+            minSdk = 30
 
             versionNameSuffix =
                 "-dev-${DateTimeFormatter.ofPattern("dd-MM-yyyy").format(LocalDate.now())}"
@@ -62,7 +74,7 @@ android {
     }
 
     buildTypes {
-        getByName("debug") {
+        debug {
             isMinifyEnabled = false
             isShrinkResources = false
             isDebuggable = true
@@ -72,7 +84,6 @@ android {
 
         maybeCreate("preRelease").apply {
             isMinifyEnabled = true
-            isDebuggable = true
 
             versionNameSuffix =
                 "-${DateTimeFormatter.ofPattern("dd-MM-yyyy").format(LocalDate.now())}"
@@ -84,7 +95,7 @@ android {
             signingConfig = signingConfigs["testKey"]
         }
 
-        getByName("release") {
+        release {
             isMinifyEnabled = true
             isDebuggable = false
 
@@ -98,22 +109,20 @@ android {
 
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "17"
         freeCompilerArgs = freeCompilerArgs + arrayOf(
-            "-Xallow-jvm-ir-dependencies",
             "-Xskip-prerelease-check",
-            "-Xjvm-default=all",
             "-Xopt-in=kotlin.RequiresOptIn",
         )
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.get()
+        kotlinCompilerExtensionVersion = "1.5.11"
     }
 }
 
@@ -121,6 +130,7 @@ dependencies {
     //region Kotlin
     implementation(libs.kotlin.std)
     implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.kotlinx.coroutines.test)
 //    implementation(libs.kotlinx.serialization.json)
     //endregion
 
@@ -128,21 +138,16 @@ dependencies {
     implementation(libs.androidx.core)
     implementation(libs.androidx.core.splashscreen)
 
-    implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.activity)
     implementation(libs.androidx.activity.compose)
-    //endregion
+    implementation(libs.androidx.navigation.compose)
 
-    //region Google
-    implementation(libs.google.material)
+    implementation(libs.androidx.preferences)
+    implementation(libs.androidx.datastore.preferences)
     //endregion
 
     //region Network
-//    implementation(libs.squareup.okhttp3)
-//    implementation(libs.squareup.retrofit2)
-    implementation("org.jsoup:jsoup:1.14.3")
-
-//    implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")
+    implementation(libs.jsoup)
+    implementation(libs.coil.compose)
     //endregion
 
     //region Firebase
@@ -152,19 +157,39 @@ dependencies {
 
     //region Compose
     implementation(libs.bundles.compose)
-    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.compose.material3)
 
     implementation(libs.androidx.lifecycle.viewmodel.compose)
-
-    implementation(libs.androidx.constraintlayout.compose)
-    implementation(libs.google.accompanist.insets)
-    implementation(libs.google.accompanist.pager)
-    implementation(libs.google.accompanist.swiperefresh)
-
-    implementation("io.coil-kt:coil-compose:2.0.0-alpha01")
-    implementation("me.onebone:toolbar-compose:2.2.0")
     //endregion
 
-    coreLibraryDesugaring(libs.android.tools.desugar)
+    //region Hilt
+    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
+    ksp(libs.androidx.hilt.compiler)
+    //endregion
+
+    //region Test
+    testImplementation(libs.junit.api)
+    testImplementation(libs.google.truth)
+    testImplementation(libs.mockk)
+    //endregion
+
+    //region Android Test
+    androidTestImplementation(libs.mockk.android)
+    androidTestImplementation(libs.androidx.test.core)
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.androidx.test.ext.truth)
+    androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.androidx.test.rules)
+
+    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+    androidTestImplementation(libs.androidx.compose.ui.test.manifest)
+    androidTestImplementation(libs.hilt.android.testing)
+
+    androidTestImplementation(libs.androidx.espresso.core)
+    //endregion
+
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
     debugImplementation(libs.androidx.compose.ui.tooling)
 }

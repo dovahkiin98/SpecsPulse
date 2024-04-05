@@ -1,15 +1,15 @@
 package specspulse.app.data
 
-sealed class UIState {
-    open class Success<out T>(val data: T) : UIState()
+sealed class UIState<T> {
+    open class Success<T>(val data: T) : UIState<T>()
 
-    class Failure(val error: Throwable) : UIState()
+    class Failure<T>(val error: Throwable) : UIState<T>()
 
-    object Loading : UIState()
+    class Loading<T> : UIState<T>()
 
     override fun toString(): String = when (this) {
         is Loading -> "Loading[]"
         is Success<*> -> "Success[data: $data]"
-        is Failure -> error.message ?: error.toString()
+        is Failure -> "Failure[${error.message ?: error.toString()}]"
     }
 }
