@@ -10,4 +10,6 @@ interface Repository {
     suspend fun searchDevices(term: String): List<Device>
 
     suspend fun getDeviceDetails(link: String): DeviceDetails
+
+    suspend fun getDeviceImages(link: String): List<String>
 }

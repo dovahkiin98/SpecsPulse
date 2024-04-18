@@ -6,10 +6,11 @@ import java.time.format.DateTimeFormatter
 plugins {
     alias(libs.plugins.android.tools.build.gradle)
     alias(libs.plugins.kotlin.gradle)
+    alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt.android.gradle)
-    alias(libs.plugins.google.services)
-    alias(libs.plugins.firebase.crashlytics)
+//    alias(libs.plugins.google.services)
+//    alias(libs.plugins.firebase.crashlytics)
 }
 
 android {
@@ -122,7 +123,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.11"
+        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
 }
 
@@ -131,7 +132,7 @@ dependencies {
     implementation(libs.kotlin.std)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.coroutines.test)
-//    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.kotlinx.serialization.core)
     //endregion
 
     //region AndroidX

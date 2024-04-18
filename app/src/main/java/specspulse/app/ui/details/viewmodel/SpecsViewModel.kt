@@ -14,18 +14,27 @@ import specspulse.app.model.DeviceDetails
 import javax.inject.Inject
 
 @HiltViewModel
-class DetailsViewModel @Inject constructor(
+class SpecsViewModel @Inject constructor(
     private val repository: Repository,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
+
+    private val deviceTag = savedStateHandle.get<String>("tag")!!
+    private val deviceId = savedStateHandle.get<Int>("id")!!
+    private val _deviceName = MutableStateFlow(
+        savedStateHandle.get<String?>("name"),
+    )
+
+    private val detailsLink get() = "$deviceTag-$deviceId"
     private val _device = MutableStateFlow<UIState<DeviceDetails>>(UIState.Loading())
     val device = _device.asStateFlow()
 
-    private val deviceLink = savedStateHandle.get<String>("deviceLink")!!
-    val deviceName = savedStateHandle.get<String>("deviceName")!!
+    val deviceName = _deviceName.asStateFlow()
 
     init {
         getDeviceDetails()
+
+        println(savedStateHandle.toString())
     }
 
     fun getDeviceDetails() {
@@ -33,7 +42,9 @@ class DetailsViewModel @Inject constructor(
             _device.emit(UIState.Loading())
 
             try {
-                val device = repository.getDeviceDetails(deviceLink)
+                val device = repository.getDeviceDetails(detailsLink)
+
+                _deviceName.value = device.name
 
                 _device.emit(UIState.Success(device))
             } catch (e: Exception) {

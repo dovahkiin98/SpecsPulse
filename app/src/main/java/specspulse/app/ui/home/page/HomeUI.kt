@@ -33,17 +33,20 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.ExperimentalSafeArgsApi
 import androidx.navigation.NavController
 import specspulse.app.R
 import specspulse.app.data.UIState
 import specspulse.app.model.Device
 import specspulse.app.theme.AppTheme
 import specspulse.app.ui.home.viewmodel.HomeViewModel
+import specspulse.app.ui.main.Route
 import specspulse.app.ui.main.Routes
 import specspulse.app.view.DevicesGrid
 import specspulse.app.view.ErrorView
 import specspulse.app.view.LoadingView
 
+@OptIn(ExperimentalSafeArgsApi::class)
 @Composable
 fun HomeUI(
     navController: NavController,
@@ -65,7 +68,7 @@ fun HomeUI(
         pullToRefreshState = pullToRefreshState,
         lazyGridState = lazyGridState,
         onSearch = {
-            navController.navigate(Routes.SEARCH)
+            navController.navigate(Route.Search)
         },
         onRetry = {
             viewModel.getMostPopular()

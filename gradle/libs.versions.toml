@@ -1,20 +1,21 @@
 [versions]
-gradle = "8.5.0-alpha03"
+gradle = "8.5.0-alpha05"
 
 kotlin = "1.9.23"
 coRoutines = "1.8.0"
 serialization = "1.6.3"
 
-core = "1.13.0-rc01"
+core = "1.13.0"
 coreSplashscreen = "1.1.0-rc01"
 appCompat = "1.7.0-alpha03"
-activity = "1.9.0-rc01"
-lifecycle = "2.8.0-alpha04"
+activity = "1.9.0"
+lifecycle = "2.8.0-beta01"
 room = "2.6.1"
-navigation = "2.8.0-alpha06"
-datastore = "1.1.0-rc01"
+navigation = "2.8.0-alpha07"
+datastore = "1.1.0"
 
-compose = "1.7.0-alpha06"
+compose = "1.7.0-alpha07"
+compose-compiler = "1.5.12"
 accompanist = "0.35.0-alpha"
 
 hilt = "2.51.1"
@@ -27,6 +28,7 @@ kotlin-std = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kot
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coRoutines" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coRoutines" }
 kotlinx-coroutines-playServices = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "coRoutines" }
+kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "serialization" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
 
 androidx-core = { module = "androidx.core:core-ktx", version.ref = "core" }
@@ -54,7 +56,7 @@ google-play-core = "com.google.android.play:core:1.10.3"
 google-play-core-ktx = "com.google.android.play:core-ktx:1.8.1"
 google-play-appupdate-ktx = "com.google.android.play:app-update-ktx:2.1.0"
 
-firebase-bom = "com.google.firebase:firebase-bom:32.8.0"
+firebase-bom = "com.google.firebase:firebase-bom:32.8.1"
 firebase-analytics = { module = "com.google.firebase:firebase-analytics-ktx" }
 firebase-messaging = { module = "com.google.firebase:firebase-messaging-ktx" }
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics-ktx" }
@@ -69,7 +71,7 @@ androidx-compose-runtime = { module = "androidx.compose.runtime:runtime", versio
 androidx-compose-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "compose" }
 
 androidx-compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "compose" }
-androidx-compose-material3 = "androidx.compose.material3:material3:1.3.0-alpha04"
+androidx-compose-material3 = "androidx.compose.material3:material3:1.3.0-alpha05"
 
 jsoup = "org.jsoup:jsoup:1.17.2"
 coil-compose = "io.coil-kt:coil-compose:2.6.0"
@@ -123,6 +125,7 @@ compose = [
 android-tools-build-gradle = { id = "com.android.application", version.ref = "gradle" }
 android-test = { id = "com.android.test", version.ref = "gradle" }
 kotlin-gradle = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 hilt-android-gradle = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 ksp = { id = "com.google.devtools.ksp", version = "1.9.23-1.0.19" }
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version = "2.9.9" }

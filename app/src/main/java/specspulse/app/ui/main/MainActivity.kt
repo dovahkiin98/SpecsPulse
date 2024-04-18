@@ -21,6 +21,8 @@ class MainActivity : ComponentActivity() {
             AppTheme {
                 MainUI()
             }
+
+//            TestDialog()
         }
     }
 }

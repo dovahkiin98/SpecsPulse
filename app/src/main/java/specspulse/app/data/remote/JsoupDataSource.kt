@@ -1,6 +1,5 @@
 package specspulse.app.data.remote
 
-import android.net.Uri
 import org.jsoup.Jsoup
 import specspulse.app.model.Device
 import specspulse.app.model.DeviceDetails
@@ -8,27 +7,9 @@ import specspulse.app.model.DeviceSpec
 import specspulse.app.model.DeviceSpecsSection
 
 class JsoupDataSource : RemoteDataSource {
-    companion object {
-        private val baseUri = Uri.Builder()
-            .scheme("https")
-            .authority("m.gsmarena.com")
-            .build()
-
-        private const val SEARCH = "results.php3"
-
-        fun searchLink(name: String): String = baseUri.buildUpon()
-            .appendPath(SEARCH)
-            .appendQueryParameter("sQuickSearch", "yes")
-            .appendQueryParameter("sName", name)
-            .toString()
-
-        fun deviceLink(deviceLink: String) = baseUri.buildUpon()
-            .appendPath(deviceLink)
-            .toString()
-    }
 
     override suspend fun getDeviceDetails(deviceLink: String): DeviceDetails {
-        val link = deviceLink(deviceLink)
+        val link = GSM.devicePageLink(deviceLink)
 
         val doc = Jsoup.connect(link).get()
 
@@ -90,17 +71,31 @@ class JsoupDataSource : RemoteDataSource {
         }
         //endregion
 
+        val deviceId = deviceLink.substringAfter('-').substringBefore('.').toInt()
+
         return DeviceDetails(
+            id = deviceId,
             name = doc.getElementsByClass("section nobor")[0].wholeText(),
             image = doc.getElementsByClass("specs-cp-pic-rating")[0].child(0).child(0).attr("src"),
-            link = deviceLink,
             details = detailsSections,
             versions = deviceVersions,
         )
     }
 
+    override suspend fun getDeviceImages(imagesLink: String): List<String> {
+        val link = GSM.devicePageLink(imagesLink)
+
+        val doc = Jsoup.connect(link).get()
+
+        val images = doc.getElementById("pictures")!!
+
+        return images.children().select("img").map {
+            it.attr("src")
+        }
+    }
+
     override suspend fun search(term: String): List<Device> {
-        val link = searchLink(term)
+        val link = GSM.searchLink(term)
 
         val doc = Jsoup.connect(link).get()
 
@@ -109,14 +104,17 @@ class JsoupDataSource : RemoteDataSource {
         return list.children().map {
             val item = it.child(0)
 
-            val deviceName = item.child(1).wholeText()
-            val deviceImage = item.child(0).attr("src")
             val deviceLink = item.attr("href")
 
+            val deviceId = deviceLink.substringAfter('-').substringBefore('.').toInt()
+            val deviceName = item.child(1).wholeText()
+            val deviceImage = item.child(0).attr("src")
+
+
             Device(
+                deviceId,
                 deviceName,
                 deviceImage,
-                deviceLink,
             )
         }
     }

@@ -21,15 +21,23 @@ class RepositoryImpl(
 
     }
 
-    override suspend fun searchDevices(term: String) = withContext(dispatcher) {
-        withTimeout(TIMEOUT) {
-            remoteDataSource.search(term)
-        }
+    override suspend fun searchDevices(term: String) = makeRequest {
+        remoteDataSource.search(term)
     }
 
-    override suspend fun getDeviceDetails(link: String) = withContext(dispatcher) {
+    override suspend fun getDeviceDetails(link: String) = makeRequest {
+        remoteDataSource.getDeviceDetails(link)
+    }
+
+    override suspend fun getDeviceImages(link: String) = makeRequest {
+        remoteDataSource.getDeviceImages(link)
+    }
+
+    private suspend fun <T> makeRequest(
+        block: suspend CoroutineScope.() -> T,
+    ) = withContext(dispatcher) {
         withTimeout(TIMEOUT) {
-            remoteDataSource.getDeviceDetails(link)
+            block()
         }
     }
 
